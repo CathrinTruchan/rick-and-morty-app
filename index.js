@@ -18,11 +18,13 @@ let searchQuery = '';
 async function fetchCharactersAndRender() {
   cardContainer.innerHTML = '';
   const fetchedCharacters = await fetch(
-    `https://rickandmortyapi.com/api/character?page=${page}`,
+    `https://rickandmortyapi.com/api/character?page=${page}&name=${searchQuery}`,
   );
   const data = await fetchedCharacters.json();
+
   maxPage = data.info.pages;
   pagination.textContent = page + ' / ' + maxPage;
+
   data.results.forEach(character => {
     const newCard = createCharacterCard(character);
     cardContainer.append(newCard);
@@ -30,6 +32,13 @@ async function fetchCharactersAndRender() {
 }
 
 fetchCharactersAndRender();
+
+searchBar.addEventListener('submit', event => {
+  event.preventDefault();
+  searchQuery = event.target.query.value;
+  page = 1;
+  fetchCharactersAndRender();
+});
 
 prevButton.addEventListener('click', () => {
   --page;
