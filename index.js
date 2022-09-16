@@ -16,6 +16,7 @@ let page = 1;
 let searchQuery = '';
 
 function fetchCharactersAndRender() {
+  cardContainer.innerHTML = '';
   const fetchedCharacters = fetch('https://rickandmortyapi.com/api/character')
     .then(Response => {
       return Response.json();
