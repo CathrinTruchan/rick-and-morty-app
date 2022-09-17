@@ -1,4 +1,4 @@
-export function createSearchBar() {
+export function createSearchBar(searchBarEventHandler) {
   const searchBarForm = document.createElement('form');
   searchBarForm.classList = 'search-bar';
   searchBarForm.dataset.js = 'search-bar';
@@ -16,5 +16,9 @@ export function createSearchBar() {
     alt=""
   />
 </button>`;
+  searchBarForm.addEventListener('submit', event => {
+    event.preventDefault();
+    searchBarEventHandler(event.target.elements[0].value);
+  });
   return searchBarForm;
 }

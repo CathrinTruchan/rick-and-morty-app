@@ -1,24 +1,24 @@
 import {createCharacterCard} from './components/card/card.js';
 import {createSearchBar} from './components/search-bar/search-bar.js';
-import {createNavButton} from './components/nav-button/nav-button.js';
 import {createNavPagination} from './components/nav-pagination/nav-pagination.js';
-
-const cardContainer = document.querySelector('[data-js="card-container"]');
-const searchBarContainer = document.querySelector(
-  '[data-js="search-bar-container"]',
-);
-const searchBar = createSearchBar();
-searchBarContainer.append(searchBar);
-const navigation = document.querySelector('[data-js="navigation"]');
-const prevButton = createNavButton('prev');
-const pagination = createNavPagination();
-const nextButton = createNavButton('next');
-navigation.append(prevButton, pagination, nextButton);
+import {createNavButton} from './components/nav-button/nav-button.js';
 
 // States
 let maxPage = 1;
 let page = 1;
 let searchQuery = '';
+
+const cardContainer = document.querySelector('[data-js="card-container"]');
+const searchBarContainer = document.querySelector(
+  '[data-js="search-bar-container"]',
+);
+const searchBar = createSearchBar(searchBarEventHandler);
+searchBarContainer.append(searchBar);
+const navigation = document.querySelector('[data-js="navigation"]');
+const prevButton = createNavButton('prev', buttonEventHandler);
+const pagination = createNavPagination();
+const nextButton = createNavButton('next', buttonEventHandler);
+navigation.append(prevButton, pagination, nextButton);
 
 async function fetchCharactersAndRender() {
   cardContainer.innerHTML = '';
@@ -43,18 +43,13 @@ async function fetchCharactersAndRender() {
 
 fetchCharactersAndRender();
 
-searchBar.addEventListener('submit', event => {
-  event.preventDefault();
-  searchQuery = event.target.query.value;
+function searchBarEventHandler(value) {
+  searchQuery = value;
   page = 1;
   fetchCharactersAndRender();
-});
+}
 
-prevButton.addEventListener('click', () => {
-  --page;
+function buttonEventHandler(navType) {
+  navType === 'prev' ? --page : ++page;
   fetchCharactersAndRender();
-});
-
-nextButton.addEventListener('click', () => {
-  fetchCharactersAndRender(++page);
-});
+}
