@@ -23,6 +23,11 @@ async function fetchCharactersAndRender() {
   const data = await fetchedCharacters.json();
 
   maxPage = data.info.pages;
+  page === maxPage
+    ? (nextButton.disabled = true)
+    : (nextButton.disabled = false);
+  page === 1 ? (prevButton.disabled = true) : (prevButton.disabled = false);
+
   pagination.textContent = page + ' / ' + maxPage;
 
   data.results.forEach(character => {

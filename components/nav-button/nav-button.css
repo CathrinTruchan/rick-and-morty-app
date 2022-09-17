@@ -9,3 +9,8 @@
 .button:hover {
   background-color: var(--nemo);
 }
+
+.button:disabled {
+  background-color: #ccc;
+  color: #666;
+}
